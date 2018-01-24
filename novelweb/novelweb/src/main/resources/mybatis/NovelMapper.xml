@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.web.mapper.NovelMapper" >
+  <resultMap id="BaseResultMap" type="com.novel.entity.Novel" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="novel_url" property="novelUrl" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="last_update_chapter" property="lastUpdateChapter" jdbcType="VARCHAR" />
+    <result column="last_update_chapter_url" property="lastUpdateChapterUrl" jdbcType="VARCHAR" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="first_letter" property="firstLetter" jdbcType="CHAR" />
+    <result column="platfrom_id" property="platfromId" jdbcType="INTEGER" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, author, novel_url, type, last_update_chapter, last_update_chapter_url, 
+    last_update_time, status, first_letter, platfrom_id, add_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_novel
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="getNovelsByKeyword" resultMap="BaseResultMap" parameterType="string" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_novel
+    where name like #{keyword} or author like #{keyword}
+  </select>
+  <select id="getNovelsByKeywordAndPlatform" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_novel
+    where (name like #{keyword} or author like #{keyword}) and platfrom_id = #{platformId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tb_novel
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.novel.entity.Novel" >
+    insert into tb_novel (id, name, author, 
+      novel_url, type, last_update_chapter, 
+      last_update_chapter_url, last_update_time, 
+      status, first_letter, platfrom_id, 
+      add_time)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{novelUrl,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{lastUpdateChapter,jdbcType=VARCHAR}, 
+      #{lastUpdateChapterUrl,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=INTEGER}, #{firstLetter,jdbcType=CHAR}, #{platfromId,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.novel.entity.Novel" >
+    insert into tb_novel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="novelUrl != null" >
+        novel_url,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="lastUpdateChapter != null" >
+        last_update_chapter,
+      </if>
+      <if test="lastUpdateChapterUrl != null" >
+        last_update_chapter_url,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="firstLetter != null" >
+        first_letter,
+      </if>
+      <if test="platfromId != null" >
+        platfrom_id,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="novelUrl != null" >
+        #{novelUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateChapter != null" >
+        #{lastUpdateChapter,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateChapterUrl != null" >
+        #{lastUpdateChapterUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="firstLetter != null" >
+        #{firstLetter,jdbcType=CHAR},
+      </if>
+      <if test="platfromId != null" >
+        #{platfromId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.novel.entity.Novel" >
+    update tb_novel
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="novelUrl != null" >
+        novel_url = #{novelUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateChapter != null" >
+        last_update_chapter = #{lastUpdateChapter,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateChapterUrl != null" >
+        last_update_chapter_url = #{lastUpdateChapterUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="firstLetter != null" >
+        first_letter = #{firstLetter,jdbcType=CHAR},
+      </if>
+      <if test="platfromId != null" >
+        platfrom_id = #{platfromId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.novel.entity.Novel" >
+    update tb_novel
+    set name = #{name,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      novel_url = #{novelUrl,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      last_update_chapter = #{lastUpdateChapter,jdbcType=VARCHAR},
+      last_update_chapter_url = #{lastUpdateChapterUrl,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      first_letter = #{firstLetter,jdbcType=CHAR},
+      platfrom_id = #{platfromId,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsert" parameterType="list">
+ 	 insert into tb_novel ( name, author, 
+     novel_url, type, last_update_chapter, 
+     last_update_chapter_url, last_update_time, 
+     status, first_letter, platfrom_id) values 
+     <foreach collection="list" item="item" separator=",">
+	     ( #{item.name,jdbcType=VARCHAR}, #{item.author,jdbcType=VARCHAR}, 
+	     #{item.novelUrl,jdbcType=VARCHAR}, #{item.type,jdbcType=VARCHAR}, #{item.lastUpdateChapter,jdbcType=VARCHAR}, 
+	     #{item.lastUpdateChapterUrl,jdbcType=VARCHAR}, #{item.lastUpdateTime,jdbcType=TIMESTAMP}, 
+	     #{item.status,jdbcType=INTEGER}, #{item.firstLetter,jdbcType=CHAR}, #{item.platfromId,jdbcType=INTEGER})
+     </foreach>
+  </insert>
+</mapper>
