@@ -92,6 +92,7 @@
 							"<td><a href ='./showChapterDetail.do?url="+novel.lastUpdateChapterUrl+"&chapterListUrl='>"+novel.lastUpdateChapter+"</td>"+
 							"<td>"+status+"</td>"+
 							"<td>"+platfrom+"</td>"+
+							"<td><a onclick='downloadNovel(\""+novel.novelUrl+"\",\""+novel.name+"\")'>下载</a></td>"+
 						"</tr>");
 					});
 					var pages =parseInt(result.data.pages);
@@ -121,6 +122,33 @@
 			}
 			
 		})
+	}
+	//下载小说
+	function downloadNovel(novelUrl,name){
+		
+		layer.alert("确定要下载《"+name+"》吗？", {
+			  skin: 'layui-layer-molv' //样式类名
+			  ,closeBtn: 1
+			}, function(index){
+				layer.close(index);
+				$.ajax({
+					url:"./novelDownload.do",
+					type:"post",
+					dataType:"json",
+					data:{"novelUrl":novelUrl},
+					success:function (result){
+						if(result.status==1){
+							alert("下载完成,保存路径:"+result.data);
+						}else{
+							alert("下载失败")
+						}
+					},
+					error:function (result){
+						alert(result.status)
+					}
+				})
+				
+			});
 	}
 </script>
 <body style="background-color:#F0FFF0 ">
@@ -152,6 +180,7 @@
 					<td>最新章节</td>
 					<td>状态</td>
 					<td>平台</td>
+					<td></td>
 				</tr>
 			</thead>
 			<tbody id="novelList">
@@ -159,7 +188,7 @@
 			
 			<tfoot>
 				<tr>
-					<td colspan="6">
+					<td colspan="7">
 						<div class="btn-group" style="float: right;">
 						</div>
 					</td>

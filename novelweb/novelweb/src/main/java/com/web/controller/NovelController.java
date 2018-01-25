@@ -16,11 +16,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.novel.config.NovelDownloadConfig;
 import com.novel.entity.Chapter;
 import com.novel.entity.ChapterDetail;
 import com.novel.entity.Novel;
+import com.novel.impl.NovelDownloadImpl;
 import com.novel.inf.IChapter;
 import com.novel.inf.IChapterDetail;
+import com.novel.inf.INovelDownload;
 import com.novel.util.ChapterDetailFactory;
 import com.novel.util.ChapterFactory;
 import com.novel.util.NovelSpiderUtil;
@@ -107,5 +110,23 @@ public class NovelController {
 		mv.getModel().put("chapterDetail", chapterDetail);
 		mv.getModel().put("chapterListUrl", chapterListUrl);
 		return mv;
+	}
+	
+	@RequestMapping(value = "novelDownload.do",method = RequestMethod.POST)
+	@ResponseBody
+	public JSONResponse novelDownload(String novelUrl){
+		INovelDownload novelDownload = new NovelDownloadImpl();
+		NovelDownloadConfig config = new NovelDownloadConfig();
+		config.setPath("e:/novel");
+		config.setSize(50);
+		String savePath;
+		try {
+			savePath = novelDownload.novelDownload(novelUrl, config);
+			System.out.println("下载文件保存在："+savePath);
+			return JSONResponse.success(savePath);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JSONResponse.error("下载失败");
+		}
 	}
 }
